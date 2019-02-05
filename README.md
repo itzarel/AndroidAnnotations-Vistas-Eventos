@@ -2,11 +2,11 @@
 Curso de Openwebinar: AndroidAnnotations Vistas y Eventos
 
 
-### SECCIÓN: Introducción a AndroidAnnotations - Tiempo Estimado (10 minutos)
+### SECCIÓN: Introducción a AndroidAnnotations
 	CLASE: Recapitulación de las anotaciones explicadas en P1
 	CLASE: Explicación de las secciones a continuación
 
-### SECCIÓN: Diseño de una calculadora - Tiempo Estimado (120 minutos)
+### SECCIÓN: Diseño de una calculadora
 	CLASE: Elaboración de UI
 	CLASE: Pantalla calculadora: Anotaciones ViewById
 	CLASE: Botones: Anotaciones Click, Touch, AfterTextChange, LongClick
@@ -15,7 +15,7 @@ Curso de Openwebinar: AndroidAnnotations Vistas y Eventos
 	PRÁCTICA: Práctica III hacer la lógica de operaciones (=)
 	PRÁCTICA: Práctica IV añadir el evento SeekBarProgressChange para cambiar los estilos
   
-### PRACTICA FINAL - Tiempo Estimado (30 minutos)
+### PRACTICA FINAL
 	Actualizar la práctica final anterior con las anotaciones vistas en este tema.
 	Los objetos de UI se deberán instanciar con ViewById.
 	El evento de los botones que permiten cambiar de color al fondo de pantalla del objeto personalizado deberá poder reproducir una animación de parpadeo.
