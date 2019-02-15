@@ -62,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
         tv_results.setText("");
     }
 
+
+
+
+
+// CLICK ///////////////////////////////////////////////////////////////////////////////////////////
+    @Click({R.id.b_1, R.id.b_2, R.id.b_3, R.id.b_4, R.id.b_5,
+            R.id.b_6, R.id.b_7, R.id.b_8, R.id.b_9, R.id.b_0})
+    void bDigitalButtons(View clickedView) {
+        String buttonValue = getValue(clickedView.getId());
+        String writeInTvOperations = tvOperations.getText() + buttonValue;
+        tvOperations.setText(writeInTvOperations);
+    }
+
     @Click(R.id.b_dot)
     void buttonDotClicked() {
         final String DOT = ".";
@@ -72,6 +85,94 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+/*
+    @Click
+    void b_1() {
+        Log.i("OK", "Hemos ejecutado un simple click");
+    }
+
+    // LONG CLICK //////////////////////////////////////////////////////////////////////////////////
+    @LongClick
+    void b_1(View longClick) {
+        Log.i("OK", "Hemos ejecutado un LongClick");
+    }
+
+
+    // TOUCH ///////////////////////////////////////////////////////////////////////////////////////
+    @Touch
+    void b_1(MotionEvent motionEvent) {
+        if (MotionEvent.ACTION_UP == motionEvent.getAction()) {
+            Log.i("KO", "No podemos combinar Touch con Click y LongClick. Estos ultimos son absorvidor por Touch");
+        }
+    }*/
+
+
+
+
+
+    // AfterTextChange /////////////////////////////////////////////////////////////////////////////
+    @AfterTextChange
+    void tv_results() {
+        String tvResults = tv_results.getText().toString();
+        tvOperations.setText(tvResults);
+    }
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// ESTO ES PARA LAS PRÁCTICAS //////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+    /////////////////
+    // PRACTICA #1 //
+    /////////////////
+*/
+    @LongClick
+    void b_del() {
+        tv_results.setText("");
+    }
+
+    @Click
+    void b_del(View v) {
+        String actualText = tvOperations.getText().toString();
+        if (!actualText.isEmpty()) {
+            String removedLastElement = actualText.substring(0, actualText.length() - 1);
+            tvOperations.setText(removedLastElement);
+        }
+    }
+
+
+
+
+/**
+    /////////////////
+    // PRACTICA #2 //
+    /////////////////
+*/
+    @Touch({R.id.b_div, R.id.b_mul, R.id.b_min, R.id.b_plus})
+    void bOperationsButtons(View button, MotionEvent event) {
+        if (MotionEvent.ACTION_DOWN == event.getAction()) {
+            button.startAnimation(blink);
+        }
+        if (MotionEvent.ACTION_UP == event.getAction()) {
+            String writeInTvOperation = tvOperations.getText().toString() +
+                    ((Button) button).getText().toString();
+            tvOperations.setText(writeInTvOperation);
+            button.clearAnimation();
+        }
+    }
+
+
+
+
+/**
+    /////////////////
+    // PRACTICA #3 //
+    /////////////////
+*/
     @Click
     void b_equal() {
         String toRemoveZeros = tvOperations.getText().toString();
@@ -86,55 +187,35 @@ public class MainActivity extends AppCompatActivity {
         tv_results.setText(finalResult);
     }
 
-    @Click({R.id.b_0, R.id.b_1, R.id.b_2, R.id.b_3, R.id.b_4, R.id.b_5, R.id.b_6, R.id.b_7, R.id.b_8, R.id.b_9, R.id.b_0})
-    void bDigitalButtons(View clickedView) {
-        String buttonValue = getValue(clickedView.getId());
-        String writeInTvOperations = tvOperations.getText() + buttonValue;
-        tvOperations.setText(writeInTvOperations);
-    }
 
-    @Click
-    void b_del(View v) {
-        String actualText = tvOperations.getText().toString();
-        if (!actualText.isEmpty()) {
-            String removedLastElement = actualText.substring(0, actualText.length() - 1);
-            tvOperations.setText(removedLastElement);
-        }
-    }
 
-    @LongClick
-    void b_del() {
-        tv_results.setText("");
-    }
 
-    @Touch({R.id.b_div, R.id.b_mul, R.id.b_min, R.id.b_plus})
-    void bOperationsButtons(View v, MotionEvent event) {
-        if (MotionEvent.ACTION_DOWN == event.getAction()) {
-            v.startAnimation(blink);
-        }
-        if (MotionEvent.ACTION_UP == event.getAction()) {
-            String writeInTvOperations = tvOperations.getText().toString();
-            writeInTvOperations = writeInTvOperations + getOperation(v.getId());
-            tvOperations.setText(writeInTvOperations);
-            v.clearAnimation();
-        }
-    }
-
-    @AfterTextChange
-    void tv_results() {
-        String tvResults = tv_results.getText().toString();
-        tvOperations.setText(tvResults);
-    }
-
+/**
+    /////////////////
+    // PRACTICA #4 //
+    /////////////////
+*/
     @SeekBarProgressChange
     void sb_color_selector(int progress) {
         final int OPAQUE_COLOR = 0xFF000000;
+        final  int OPAQUE_COLOR_WHITE = 0xFFFFFFFF;
+
         b_dot.setBackgroundColor( OPAQUE_COLOR+progress );
         b_equal.setBackgroundColor( OPAQUE_COLOR+progress );
         c_main_view.setBackgroundColor( OPAQUE_COLOR+progress );
+
+        tvOperations.setTextColor(OPAQUE_COLOR_WHITE-progress);
+        tv_results.setTextColor(OPAQUE_COLOR_WHITE-progress);
+        b_dot.setTextColor(OPAQUE_COLOR_WHITE-progress);
+        b_equal.setTextColor(OPAQUE_COLOR_WHITE-progress);
     }
 
 
+    /**
+     * Asegura que haya al menos un numero
+     * @param stringToEvaluate La información recuperada del TextView
+     * @return booleano: Hay la menos un numero
+     */
     private boolean isThereNumbers(String stringToEvaluate) {
         return stringToEvaluate != null && ( stringToEvaluate.contains("0") ||
                 stringToEvaluate.contains("1") ||
@@ -148,6 +229,11 @@ public class MainActivity extends AppCompatActivity {
                 stringToEvaluate.contains("9") );
     }
 
+    /**
+     * Permite eliminar todos los ceros iniciales
+     * @param toRemove String con los numeros a evaluar y eliminar los ceros iniciales
+     * @return string sin ceros inicales
+     */
     private String removeInitialZeros(String toRemove) {
         final char ZERO = '0';
         final char DOT = '.';
@@ -172,6 +258,11 @@ public class MainActivity extends AppCompatActivity {
         return toReturn;
     }
 
+    /**
+     * Permite eliminar todos los ceros finales detras de la coma
+     * @param toRemove String con los numeros a evaluar y eliminar los ceros finales
+     * @return string sin ceros finales tras la coma
+     */
     private String removeLastDecimalsZero(String toRemove) {
         final String ZERO = "0";
         final String DOT = ".";
@@ -194,10 +285,20 @@ public class MainActivity extends AppCompatActivity {
         return toReturn;
     }
 
+    /**
+     * Invierte el string pasado por parametro al metodo
+     * @param value string a invertir
+     * @return string invertido
+     */
     private String reverseString(String value) {
         return new StringBuilder(value).reverse().toString();
     }
 
+    /**
+     * Permite recuperar el valor que tiene el botón pulsado
+     * @param id Identificador del botón
+     * @return Valor del botón
+     */
     private String getValue(int id) {
         String value;
 
@@ -237,29 +338,14 @@ public class MainActivity extends AppCompatActivity {
         return value;
     }
 
-    private String getOperation(int id) {
-        String value;
-
-        switch (id) {
-            case R.id.b_div:
-                value = "/";
-                break;
-            case R.id.b_mul:
-                value = "*";
-                break;
-            case R.id.b_min:
-                value = "-";
-                break;
-            default:
-                value = "+";
-                break;
-        }
-
-        return value;
-    }
-
+    /**
+     * Hace el calculo general de todas la operaciones compuestas por numero-operacion-numero
+     * @param operations String con las operaciones
+     * @return Stringcon el resultado final
+     */
     private String executeOperations(String operations) {
         String finalResult = "";
+        //Elimina las operaciones de inicio y final
         List<String> recoveredOperations = recoverOperations(operations);
         recoveredOperations = removeOperatorsFromStart(recoveredOperations);
         Collections.reverse(recoveredOperations);
@@ -271,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
             recoveredOperations.remove(0);
             for (int c = 0; c < recoveredOperations.size(); c = c + 2) {
                 try {
+                    //Realiza la operacion de numero-operacion-numero
                     firstValue = operate(firstValue,
                             new BigDecimal( recoveredOperations.get(c+1) ),
                             recoveredOperations.get(c));
@@ -285,6 +372,11 @@ public class MainActivity extends AppCompatActivity {
         return finalResult;
     }
 
+    /**
+     * Creará una lista de numero-operacion-numero, teniendo en cuenta que los numeros pueden ser decimales
+     * @param operations String que contiene los numeros y operaciones
+     * @return Lista con numero-operacion-numero
+     */
     private List<String> recoverOperations(String operations) {
         final String DOT = ".";
         List<String> values = new ArrayList<>();
@@ -305,6 +397,11 @@ public class MainActivity extends AppCompatActivity {
         return values;
     }
 
+    /**
+     * Permite eliminar al inicio lo que no sean numeros
+     * @param in Lista numero-operacion-numero
+     * @return Lista asegurada que comienza por un numero
+     */
     private List<String> removeOperatorsFromStart(List<String> in) {
         if (in != null && !in.isEmpty())
             if ( !isNumeric( in.get(0) ) ) {
@@ -315,6 +412,14 @@ public class MainActivity extends AppCompatActivity {
         return in;
     }
 
+    /**
+     * Realiza la operacion aritmetica
+     * @param firstOperator Primer operador
+     * @param secondOperator Segundo operador
+     * @param operation Operacion
+     * @return Resultado de la operacion
+     * @throws ArithmeticException Controla posibles excepciones al convertir in String a un numero
+     */
     private BigDecimal operate(BigDecimal firstOperator, BigDecimal secondOperator, String operation) throws ArithmeticException {
         BigDecimal toReturn = BigDecimal.valueOf(0);
 
@@ -337,6 +442,11 @@ public class MainActivity extends AppCompatActivity {
         return toReturn;
     }
 
+    /**
+     * Valida que sea un numero
+     * @param strNum Strin numerico
+     * @return boolean: si es numero
+     */
     private boolean isNumeric(String strNum) {
         try {
             Double.parseDouble(strNum);
