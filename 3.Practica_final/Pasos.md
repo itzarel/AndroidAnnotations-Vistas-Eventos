@@ -1,4 +1,4 @@
-# Pŕactica final
+# Práctica final
 
 Recuperaremos la práctica del curso anterior e iremos haciendo las modificaciones.
 
